@@ -1,11 +1,11 @@
 {
-    "name": "yokai_web",
-    "short_name": "yokai_web",
+    "name": "Yokai Admin",
+    "short_name": "Yokai",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "background_color": "#111318",
+    "theme_color": "#111318",
+    "description": "Panel administrativo de Yokai.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

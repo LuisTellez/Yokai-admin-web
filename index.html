@@ -50,6 +50,13 @@
   </style>
 </head>
 <body>
+  <script src="passkeys_bundle.js" type="application/javascript"></script>
+  <script>
+    window.yokaiIsStandalone = function () {
+      return window.matchMedia('(display-mode: standalone)').matches ||
+        window.navigator.standalone === true;
+    };
+  </script>
   <script src="flutter_bootstrap.js" async></script>
 </body>
 </html>

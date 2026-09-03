@@ -18,12 +18,14 @@
 
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="description" content="Panel administrativo de Yokai.">
-  <meta name="theme-color" content="#111318">
+  <meta name="theme-color" content="#101217">
+  <meta name="color-scheme" content="dark">
 
   <!-- iOS meta tags & icons -->
   <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Yokai Admin">
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
 
@@ -32,6 +34,20 @@
 
   <title>Yokai Admin</title>
   <link rel="manifest" href="manifest.json">
+  <style>
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+      background-color: #101217;
+      color-scheme: dark;
+    }
+
+    body {
+      min-height: 100vh;
+      min-height: 100dvh;
+    }
+  </style>
 </head>
 <body>
   <script src="flutter_bootstrap.js" async></script>

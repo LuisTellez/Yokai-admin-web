@@ -38704,8 +38704,7 @@ mI(){return B.d.cN($.d4.al()===B.av?5*$.eg.al()/100:2.4*$.eg.al()/100,20,36)},
 jD(a){var s=$.f7.al(),r=$.eg.al(),q=$.bd5.al(),p=$.bd4.al(),o=$.d4.al()===B.av?1.08:1.16
 return B.d.cN(a*((a*s/100+a*r/100+q*p)/2.08)/100,a*0.9,a*o)},
 bor(a,b){if(a>=1180)return B.e.cN(b,1,4)
-if(a>=620)return B.e.cN(b,1,2)
-return 1},
+return B.e.cN(b,1,2)},
 bos(a){if(a>=680)return 2
 return 1},
 bf4(a,b,c){var s,r=b==null?new A.aQ(Date.now(),0,!1):b,q=a.jA(r)?a:r

@@ -57,23 +57,6 @@
         window.navigator.standalone === true;
     };
 
-    window.yokaiRestoreInteractions = function () {
-      if (!window.yokaiIsStandalone()) return;
-      if (document.activeElement instanceof HTMLElement) {
-        document.activeElement.blur();
-      }
-      requestAnimationFrame(function () {
-        window.dispatchEvent(new Event('resize'));
-      });
-    };
-
-    window.addEventListener('pageshow', window.yokaiRestoreInteractions);
-    document.addEventListener('visibilitychange', function () {
-      if (document.visibilityState === 'visible') {
-        window.yokaiRestoreInteractions();
-      }
-    });
-
     window.yokaiPrepareStartup = async function () {
       if (!('serviceWorker' in navigator)) return true;
       const basePath = new URL(document.baseURI).pathname;
@@ -95,6 +78,7 @@
       return true;
     };
   </script>
+  <script src="ios_readiness.js"></script>
   <script>
     window.yokaiPrepareStartup().catch(function (error) {
       console.warn('No se pudo limpiar el caché anterior:', error);
@@ -102,7 +86,7 @@
     }).then(function (ready) {
       if (!ready) return;
       const bootstrap = document.createElement('script');
-      const buildVersion = "102124569" /* Flutter's service worker is deprecated and will be removed in a future Flutter release. */;
+      const buildVersion = "371953760" /* Flutter's service worker is deprecated and will be removed in a future Flutter release. */;
       bootstrap.src = 'flutter_bootstrap.js?v=' + buildVersion;
       bootstrap.async = true;
       document.body.appendChild(bootstrap);

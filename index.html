@@ -35,11 +35,19 @@
   <title>Yokai Admin</title>
   <link rel="manifest" href="manifest.json">
   <style>
+    :root {
+      --yokai-background: #101217;
+      --yokai-surface: #171a20;
+      --yokai-accent: #ff4d32;
+      --yokai-text: #f4e8e5;
+      --yokai-muted: #8f9096;
+    }
+
     html,
     body {
       margin: 0;
       min-height: 100%;
-      background-color: #101217;
+      background-color: var(--yokai-background);
       color-scheme: dark;
     }
 
@@ -47,9 +55,127 @@
       min-height: 100vh;
       min-height: 100dvh;
     }
+
+    #yokai-splash {
+      position: fixed;
+      inset: 0;
+      z-index: 2147483647;
+      display: grid;
+      place-items: center;
+      box-sizing: border-box;
+      padding: max(24px, env(safe-area-inset-top)) 24px
+        max(24px, env(safe-area-inset-bottom));
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 50% 42%, rgba(255, 77, 50, .12), transparent 34%),
+        var(--yokai-background);
+      opacity: 1;
+      transition: opacity 220ms ease, visibility 220ms ease;
+    }
+
+    #yokai-splash.yokai-splash--hidden {
+      visibility: hidden;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .yokai-splash__content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: min(82vw, 320px);
+      text-align: center;
+    }
+
+    .yokai-splash__logo-shell {
+      display: grid;
+      place-items: center;
+      width: 132px;
+      height: 132px;
+      border: 1px solid rgba(255, 255, 255, .08);
+      border-radius: 32px;
+      background: var(--yokai-surface);
+      box-shadow: 0 24px 70px rgba(0, 0, 0, .32);
+    }
+
+    .yokai-splash__logo {
+      width: 104px;
+      height: 104px;
+      object-fit: contain;
+    }
+
+    .yokai-splash__title {
+      margin: 22px 0 4px;
+      color: var(--yokai-text);
+      font: 800 27px/1.1 Arial, sans-serif;
+      letter-spacing: .18em;
+      text-indent: .18em;
+    }
+
+    .yokai-splash__subtitle {
+      margin: 0;
+      color: var(--yokai-muted);
+      font: 600 12px/1.5 Arial, sans-serif;
+      letter-spacing: .13em;
+      text-transform: uppercase;
+    }
+
+    .yokai-splash__loader {
+      width: 152px;
+      height: 3px;
+      margin-top: 30px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, .08);
+    }
+
+    .yokai-splash__loader::after {
+      display: block;
+      width: 48%;
+      height: 100%;
+      border-radius: inherit;
+      background: var(--yokai-accent);
+      content: '';
+      animation: yokai-loading 1.15s ease-in-out infinite;
+    }
+
+    .yokai-splash__status {
+      min-height: 18px;
+      margin: 14px 0 0;
+      color: var(--yokai-muted);
+      font: 400 12px/1.5 Arial, sans-serif;
+    }
+
+    @keyframes yokai-loading {
+      from { transform: translateX(-110%); }
+      to { transform: translateX(220%); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #yokai-splash { transition: none; }
+      .yokai-splash__loader::after { animation-duration: 2.4s; }
+    }
   </style>
 </head>
 <body>
+  <div id="yokai-splash" role="status" aria-live="polite" aria-label="Cargando Yokai">
+    <div class="yokai-splash__content">
+      <div class="yokai-splash__logo-shell">
+        <img
+          class="yokai-splash__logo"
+          src="icons/yokai-app-icon.png"
+          alt=""
+          width="104"
+          height="104"
+          fetchpriority="high"
+        >
+      </div>
+      <h1 class="yokai-splash__title">YOKAI</h1>
+      <p class="yokai-splash__subtitle">Centro de operaciones</p>
+      <div class="yokai-splash__loader" aria-hidden="true"></div>
+      <p id="yokai-splash-status" class="yokai-splash__status">Preparando tu sesión…</p>
+    </div>
+  </div>
   <script src="passkeys_bundle.js" type="application/javascript"></script>
   <script>
     window.yokaiIsStandalone = function () {
@@ -57,40 +183,31 @@
         window.navigator.standalone === true;
     };
 
-    window.yokaiPrepareStartup = async function () {
-      if (!('serviceWorker' in navigator)) return true;
-      const basePath = new URL(document.baseURI).pathname;
-      const registrations = await navigator.serviceWorker.getRegistrations();
-      const appRegistrations = registrations.filter(function (registration) {
-        return new URL(registration.scope).pathname.startsWith(basePath);
-      });
-      const controlled = navigator.serviceWorker.controller !== null;
-      await Promise.all(appRegistrations.map(function (registration) {
-        return registration.unregister();
-      }));
-      const reloadKey = 'yokai-service-worker-cleanup';
-      if (controlled && sessionStorage.getItem(reloadKey) !== 'done') {
-        sessionStorage.setItem(reloadKey, 'done');
-        window.location.reload();
-        return false;
+    (function () {
+      const splash = document.getElementById('yokai-splash');
+      const status = document.getElementById('yokai-splash-status');
+      let removed = false;
+
+      function removeSplash() {
+        if (removed || !splash) return;
+        removed = true;
+        splash.classList.add('yokai-splash--hidden');
+        window.setTimeout(function () { splash.remove(); }, 240);
       }
-      sessionStorage.removeItem(reloadKey);
-      return true;
-    };
+
+      window.addEventListener('flutter-first-frame', removeSplash, { once: true });
+      window.setTimeout(function () {
+        if (!removed && status) status.textContent = 'La primera carga puede tomar unos segundos…';
+      }, 6000);
+    }());
   </script>
   <script src="ios_readiness.js"></script>
   <script>
-    window.yokaiPrepareStartup().catch(function (error) {
-      console.warn('No se pudo limpiar el caché anterior:', error);
-      return true;
-    }).then(function (ready) {
-      if (!ready) return;
-      const bootstrap = document.createElement('script');
-      const buildVersion = "3242946480" /* Flutter's service worker is deprecated and will be removed in a future Flutter release. */;
-      bootstrap.src = 'flutter_bootstrap.js?v=' + buildVersion;
-      bootstrap.async = true;
-      document.body.appendChild(bootstrap);
-    });
+    const bootstrap = document.createElement('script');
+    const buildVersion = "3466127658" /* Flutter's service worker is deprecated and will be removed in a future Flutter release. */;
+    bootstrap.src = 'flutter_bootstrap.js?v=' + buildVersion;
+    bootstrap.async = true;
+    document.body.appendChild(bootstrap);
   </script>
 </body>
 </html>

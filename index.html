@@ -56,6 +56,14 @@
       min-height: 100dvh;
     }
 
+    /* Backport flutter/flutter#190486: WebKit otherwise positions the
+       accessibility hit targets below the rendered Flutter view. */
+    flutter-view > flt-semantics-host {
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+
     html.yokai-standalone-app,
     html.yokai-standalone-app body {
       touch-action: manipulation;
@@ -205,7 +213,7 @@
   <script src="ios_readiness.js"></script>
   <script>
     const bootstrap = document.createElement('script');
-    const buildVersion = "3993615037" /* Flutter's service worker is deprecated and will be removed in a future Flutter release. */;
+    const buildVersion = "939156667" /* Flutter's service worker is deprecated and will be removed in a future Flutter release. */;
     bootstrap.src = 'flutter_bootstrap.js?v=' + buildVersion;
     bootstrap.async = true;
     document.body.appendChild(bootstrap);

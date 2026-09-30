@@ -69,6 +69,15 @@
       touch-action: manipulation;
     }
 
+    /* iOS zooms the page when Flutter focuses its transparent DOM input at an
+       effective size below 16px. These elements are invisible; the visible
+       text continues to use Flutter's own typography. */
+    html.yokai-standalone-app flutter-view input,
+    html.yokai-standalone-app flutter-view textarea,
+    html.yokai-standalone-app flutter-view [contenteditable="true"] {
+      font-size: 16px !important;
+    }
+
     #yokai-splash {
       position: fixed;
       inset: 0;
@@ -213,7 +222,7 @@
   <script src="ios_readiness.js"></script>
   <script>
     const bootstrap = document.createElement('script');
-    const buildVersion = "939156667" /* Flutter's service worker is deprecated and will be removed in a future Flutter release. */;
+    const buildVersion = "2494347419" /* Flutter's service worker is deprecated and will be removed in a future Flutter release. */;
     bootstrap.src = 'flutter_bootstrap.js?v=' + buildVersion;
     bootstrap.async = true;
     document.body.appendChild(bootstrap);

@@ -22,12 +22,15 @@
   <meta name="description" content="Panel administrativo de Yokai.">
   <meta name="theme-color" content="#101217">
   <meta name="color-scheme" content="dark">
+  <meta name="format-detection" content="telephone=no">
 
   <!-- iOS meta tags & icons -->
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Yokai Admin">
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
+  <link rel="preload" href="icons/yokai-app-icon.png" as="image" type="image/png">
+  <link rel="preload" href="main.dart.js" as="script" fetchpriority="high">
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.png"/>
@@ -67,6 +70,15 @@
     html.yokai-standalone-app,
     html.yokai-standalone-app body {
       touch-action: manipulation;
+      overscroll-behavior: none;
+      -webkit-tap-highlight-color: transparent;
+      -webkit-touch-callout: none;
+    }
+
+    /* WebKit does not always resize Flutter's host element when the software
+       keyboard opens. Keep the canvas tied to the actually visible viewport. */
+    html.yokai-ios flutter-view {
+      height: var(--yokai-visual-viewport-height, 100dvh) !important;
     }
 
     /* iOS zooms the page when Flutter focuses its transparent DOM input at an
@@ -220,12 +232,6 @@
     }());
   </script>
   <script src="ios_readiness.js"></script>
-  <script>
-    const bootstrap = document.createElement('script');
-    const buildVersion = "2974288701" /* Flutter's service worker is deprecated and will be removed in a future Flutter release. */;
-    bootstrap.src = 'flutter_bootstrap.js?v=' + buildVersion;
-    bootstrap.async = true;
-    document.body.appendChild(bootstrap);
-  </script>
+  <script src="flutter_bootstrap.js" async></script>
 </body>
 </html>

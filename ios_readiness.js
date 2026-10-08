@@ -5,6 +5,9 @@
     (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
   if (!ios) return;
 
+  const root = document.documentElement;
+  if (root && root.classList) root.classList.add('yokai-ios');
+
   let ready = false;
   let frame = null;
   let lastViewport = '';
@@ -41,7 +44,14 @@
   // Compare geometry so our synthetic resize cannot create a resize loop.
   const viewport = window.visualViewport;
   if (viewport) {
+    function syncVisibleHeight() {
+      if (root && root.style) {
+        root.style.setProperty(
+          '--yokai-visual-viewport-height', viewport.height + 'px');
+      }
+    }
     function viewportChanged() {
+      syncVisibleHeight();
       const geometry = [viewport.width, viewport.height, viewport.offsetLeft,
         viewport.offsetTop, viewport.scale].join(':');
       if (geometry === lastViewport) return;
@@ -50,5 +60,6 @@
     }
     viewport.addEventListener('resize', viewportChanged);
     viewport.addEventListener('scroll', viewportChanged);
+    syncVisibleHeight();
   }
 }());

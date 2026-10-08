@@ -1,13 +1,21 @@
 {
+    "id": "./",
     "name": "Yokai Admin",
     "short_name": "Yokai",
-    "start_url": ".",
+    "description": "Panel administrativo de Yokai Fitness Center.",
+    "lang": "es-MX",
+    "dir": "ltr",
+    "start_url": "./",
+    "scope": "./",
     "display": "standalone",
+    "display_override": ["standalone"],
     "background_color": "#101217",
     "theme_color": "#101217",
-    "description": "Panel administrativo de Yokai.",
-    "orientation": "portrait-primary",
+    "categories": ["business", "fitness", "productivity"],
     "prefer_related_applications": false,
+    "launch_handler": {
+        "client_mode": ["navigate-existing", "auto"]
+    },
     "icons": [
         {
             "src": "icons/Icon-192.png",
@@ -30,6 +38,29 @@
             "sizes": "512x512",
             "type": "image/png",
             "purpose": "maskable"
+        }
+    ],
+    "shortcuts": [
+        {
+            "name": "Nuevo cliente",
+            "short_name": "Nuevo cliente",
+            "description": "Abrir el formulario de registro",
+            "url": "./#/registration",
+            "icons": [{"src": "icons/Icon-192.png", "sizes": "192x192"}]
+        },
+        {
+            "name": "Clientes",
+            "short_name": "Clientes",
+            "description": "Abrir el directorio de clientes",
+            "url": "./#/members",
+            "icons": [{"src": "icons/Icon-192.png", "sizes": "192x192"}]
+        },
+        {
+            "name": "Control de acceso",
+            "short_name": "Entradas",
+            "description": "Registrar una entrada",
+            "url": "./#/member-check-in",
+            "icons": [{"src": "icons/Icon-192.png", "sizes": "192x192"}]
         }
     ]
 }

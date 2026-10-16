@@ -43,7 +43,7 @@ _flutter.buildConfig = {"engineRevision":"deb287481e3ce9468f3434937ced4240a70539
 
 (function () {
   const status = document.getElementById('yokai-splash-status');
-  const serviceWorkerVersion = "1624533551" /* Flutter's service worker is deprecated and will be removed in a future Flutter release. */;
+  const serviceWorkerVersion = "3276015539" /* Flutter's service worker is deprecated and will be removed in a future Flutter release. */;
 
   function updateStatus(message) {
     if (status) status.textContent = message;
